@@ -1,0 +1,6 @@
+.git
+.env
+.env.example
+node_modules
+README.md
+test-suite.js

@@ -1,0 +1,20 @@
+{
+  "name": "strava-calendar-sync",
+  "version": "1.0.0",
+  "description": "Connect to Strava, view synced activities in a calendar, and edit them with two-way sync back to Strava.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.4",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

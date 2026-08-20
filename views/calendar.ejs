@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Activity Sync — Calendar</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark">
+      <span class="brand-bolt">⚡</span>
+      <span class="brand-name">Activity Sync</span>
+    </div>
+    <div class="topbar-right">
+      <% if (locals.isDemoMode) { %>
+        <div class="demo-badge">
+          <span class="demo-dot"></span> Demo Mode
+          <button id="toggleEmptyDemoBtn" class="demo-toggle-btn" title="Toggle between empty and populated states">Toggle Empty State</button>
+        </div>
+      <% } %>
+      <% if (athlete) { %>
+        <div class="athlete-chip">
+          <% if (athlete.profile_medium) { %>
+            <img src="<%= athlete.profile_medium %>" alt="<%= athlete.firstname %>" class="athlete-avatar" />
+          <% } %>
+          <span><%= athlete.firstname %> <%= athlete.lastname %></span>
+        </div>
+      <% } %>
+      <button id="addActivityBtn" class="btn btn-primary">+ Log Activity</button>
+      <button id="syncBtn" class="btn btn-outline">↻ Sync now</button>
+      <form action="/auth/logout" method="POST" class="inline-form">
+        <button type="submit" class="btn btn-ghost">Log out</button>
+      </form>
+    </div>
+  </header>
+
+  <main class="calendar-page">
+    <% if (error) { %>
+      <div class="alert"><%= error %></div>
+    <% } %>
+
+    <div id="emptyState" class="empty-state" style="display: <%= hasActivities ? 'none' : 'flex' %>;">
+      <div class="empty-icon">🗓️</div>
+      <h2>No activities synced yet</h2>
+      <p>
+        Complete an activity in the <strong>Strava app</strong>, or log one directly below,
+        then hit <strong>Sync now</strong> — new activities sync automatically.
+      </p>
+      <div style="display: flex; gap: 10px; margin-top: 10px;">
+        <button class="btn btn-primary" id="emptyStateAddBtn">+ Log activity directly</button>
+        <button class="btn btn-outline" id="emptyStateSyncBtn">↻ Sync now</button>
+      </div>
+    </div>
+
+    <div id="calendarWrap" style="display: <%= hasActivities ? 'block' : 'none' %>;">
+      <div id="calendar"></div>
+    </div>
+  </main>
+
+  <!-- Edit modal (Step 3) -->
+  <div id="editModal" class="modal-backdrop" hidden>
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modalIcon">Edit activity</h3>
+        <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+      </div>
+      <form id="editForm">
+        <input type="hidden" id="editId" />
+
+        <label class="field-label" for="editName">Name</label>
+        <input type="text" id="editName" class="field-input" required />
+
+        <label class="field-label" for="editSportType">Sport type</label>
+        <select id="editSportType" class="field-input"></select>
+
+        <label class="field-label" for="editDescription">Description</label>
+        <textarea id="editDescription" class="field-input" rows="3"></textarea>
+
+        <div class="field-row">
+          <label class="checkbox-row">
+            <input type="checkbox" id="editTrainer" /> Trainer / indoor
+          </label>
+          <label class="checkbox-row">
+            <input type="checkbox" id="editCommute" /> Commute
+          </label>
+        </div>
+
+        <div class="stat-grid" id="statGrid"></div>
+
+        <div id="modalError" class="alert modal-alert" hidden></div>
+
+        <div class="modal-actions">
+          <a id="viewOnStrava" href="#" target="_blank" rel="noopener" class="btn btn-ghost">View on Strava ↗</a>
+          <div class="modal-actions-right">
+            <button type="button" class="btn btn-ghost" id="modalCancel">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="modalSave">Save to Strava</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.15/index.global.min.js"></script>
+  <script src="/js/sportTypes.js"></script>
+  <script src="/js/calendar.js"></script>
+</body>
+</html>

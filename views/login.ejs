@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Activity Sync — Connect Strava</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="login-body">
+  <div class="login-card">
+    <div class="brand-mark">
+      <span class="brand-bolt">⚡</span>
+      <span class="brand-name">Activity Sync</span>
+    </div>
+
+    <h1>Your training log,<br />pulled straight from Strava.</h1>
+    <p class="subtitle">
+      Connect your account to see every logged activity on a calendar —
+      then edit it here and watch the change land back in your Strava app.
+    </p>
+
+    <% if (error) { %>
+      <div class="alert">
+        <% if (error === 'access_denied') { %>
+          Connection cancelled — you declined access on Strava's screen. Try again when ready.
+        <% } else { %>
+          Something went wrong connecting to Strava. Please try again.
+        <% } %>
+      </div>
+    <% } %>
+
+    <% if (isDemoMode) { %>
+      <div class="demo-pill">
+        <span class="demo-indicator"></span>
+        <span><strong>DEMO MODE</strong> — simulated Strava API (no credentials needed)</span>
+      </div>
+    <% } %>
+
+    <a href="/auth/strava" class="strava-connect-btn" id="connectBtn" aria-label="Connect to Strava">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M13.5 0L6.5 13.5H10L13.5 6.5L17 13.5H20.5L13.5 0Z" fill="currentColor"/>
+        <path d="M10.5 15.5L7.5 21.5L4.5 15.5H1L7.5 24L13.5 15.5H10.5Z" fill="currentColor" opacity="0.7"/>
+      </svg>
+      <%= isDemoMode ? 'Launch Demo Sync' : 'Connect to Strava' %>
+    </a>
+
+    <div class="login-footnote">
+      <%= isDemoMode ? 'One-click launch with mock athlete data and live in-memory sync.' : 'Read-only until you approve — we only request access to your own activities.' %>
+    </div>
+  </div>
+</body>
+</html>
